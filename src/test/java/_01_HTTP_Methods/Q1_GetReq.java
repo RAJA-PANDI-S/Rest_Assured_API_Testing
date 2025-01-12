@@ -2,17 +2,15 @@ package _01_HTTP_Methods;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import io.restassured.response.Validatable;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.*;
-import static javax.swing.UIManager.getString;
 
 public class Q1_GetReq {
-    public static void main(String args[]){
+    public static void main(String args[]) {
         getReqDemo();
     }
+
     private static void getReqDemo() {
         // Given the Content-Type of the request to be JSON
         // When a GET request is sent to the URL
@@ -27,9 +25,8 @@ public class Q1_GetReq {
                 .log()
                 .body();
 
-        JsonPath path=new JsonPath(response.extract().body().asString());
+        JsonPath path = new JsonPath(response.extract().body().asString());
         String Title = path.getString("[0].title");
         System.out.println("Title of 1st Post is --> " + Title);
     }
-
 }
