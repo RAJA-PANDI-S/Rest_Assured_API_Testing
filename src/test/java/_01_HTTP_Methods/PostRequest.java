@@ -3,9 +3,9 @@ package _01_HTTP_Methods;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
+
 import static io.restassured.RestAssured.given;
-public class Q2_PostReq {
+public class PostRequest {
     public static void main(String args[]) {
         postReqDemo();
     }

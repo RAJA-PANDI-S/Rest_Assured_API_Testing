@@ -1,24 +1,32 @@
 package _01_HTTP_Methods;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.*;
 
 public class GetRequest {
-
-    public static void main(String args[]){
-        GetReqDemo();
+    public static void main(String args[]) {
+        getReqDemo();
     }
 
-    public static void GetReqDemo(){
-        // Set the request content type to JSON
-        given().contentType(ContentType.JSON)
-                // Perform the GET request
-                .when().get("https://reqres.in/api/users/2")
-                // Check if the status code is 200
-                .then().statusCode(200)
-                // Log the response body
-                .log().body();
-                //.log().all();
+    private static void getReqDemo() {
+        // Given the Content-Type of the request to be JSON
+        // When a GET request is sent to the URL
+        // Then the status code should be 200
+        // And log the response body
+        ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("https://jsonplaceholder.typicode.com/posts")
+                .then()
+                .statusCode(200)
+                .log()
+                .body();
+
+        JsonPath path = new JsonPath(response.extract().body().asString());
+        String Title = path.getString("[0].title");
+        System.out.println("Title of 1st Post is --> " + Title);
     }
 }

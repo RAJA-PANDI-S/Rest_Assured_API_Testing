@@ -8,7 +8,7 @@ import org.testng.Assert;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.lessThan;
 
-public class Q1_RespValidation {
+public class RespValidation {
     public static void main(String[] args) {
         responseValidation();
     }
