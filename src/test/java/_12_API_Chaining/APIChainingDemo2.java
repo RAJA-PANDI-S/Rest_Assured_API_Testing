@@ -2,8 +2,10 @@ package _12_API_Chaining;
 
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import java.util.HashMap;
 
@@ -11,6 +13,8 @@ import static io.restassured.RestAssured.given;
 
 public class APIChainingDemo2 {
     static int id;
+    static HashMap<String, Object> postData = new HashMap<>();
+
     public static void main(String[] args) {
         postReqChaining();
         getReqChaining();
@@ -18,9 +22,8 @@ public class APIChainingDemo2 {
     }
     public static void postReqChaining() {
         String tokenValue="cffa5fa2ec96589b0ed0946ff6f9a8993bb8079039817f319e3983afa4083d26";
-        HashMap<String, Object> postData = new HashMap<>();
-        postData.put("name", "Karen Dillan");
-        postData.put("email", "karen.w1@test.com");
+        postData.put("name", "Kevin Dillan");
+        postData.put("email", "Kevin.w1@test.com");
         postData.put("gender", "Female");
         postData.put("status", "Active");
 
@@ -41,7 +44,7 @@ public class APIChainingDemo2 {
     }
 
     public static void getReqChaining() {
-        ValidatableResponse response = given()
+        Response response = (Response) given()
                 .contentType(ContentType.JSON)
                 .pathParams("id", id)
                 .when()
@@ -53,6 +56,17 @@ public class APIChainingDemo2 {
                 .log()
                 .body();
         System.out.println("Get Request is Completed");
+
+        //Validate the GET response against the POST payload
+        String getTitle = response.jsonPath().getString("title");
+        String getBody = response.jsonPath().getString("body");
+        int getUserId = response.jsonPath().getInt("userId");
+
+        Assert.assertEquals(postData.get("title"), getTitle);
+        Assert.assertEquals(postData.get("body"), getBody);
+        Assert.assertEquals(postData.get("userId"), getUserId);
+
+        System.out.println("Validation successful: GET response matches POST payload");
     }
 
     public static void simpleGetCall() {
