@@ -1,6 +1,7 @@
 package _12_API_Chaining;
 
 import io.restassured.http.ContentType;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -14,6 +15,7 @@ import static io.restassured.RestAssured.given;
 public class APIChainingDemo2 {
     static int id;
     static HashMap<String, Object> postData = new HashMap<>();
+    static String tokenValue="cffa5fa2ec96589b0ed0946ff6f9a8993bb8079039817f319e3983afa4083d26";
 
     public static void main(String[] args) {
         postReqChaining();
@@ -21,11 +23,10 @@ public class APIChainingDemo2 {
         //simpleGetCall();
     }
     public static void postReqChaining() {
-        String tokenValue="cffa5fa2ec96589b0ed0946ff6f9a8993bb8079039817f319e3983afa4083d26";
-        postData.put("name", "Kevin Dillan");
-        postData.put("email", "Kevin.w1@test.com");
+        postData.put("name", "Gwen Ten");
+        postData.put("email", "gwen.t1@test.com");
         postData.put("gender", "Female");
-        postData.put("status", "Active");
+        postData.put("status", "active");
 
         ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
@@ -44,27 +45,31 @@ public class APIChainingDemo2 {
     }
 
     public static void getReqChaining() {
-        Response response = (Response) given()
+        Response response =  given()
                 .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + tokenValue)
                 .pathParams("id", id)
                 .when()
                 .log()
                 .all()
-                .get("https://gorest.co.in/public/v2/users/{id}")
-                .then()
+                .get("https://gorest.co.in/public/v2/users/{id}");
+                response.then()
                 .statusCode(200)
                 .log()
                 .body();
+
         System.out.println("Get Request is Completed");
 
         //Validate the GET response against the POST payload
-        String getTitle = response.jsonPath().getString("title");
-        String getBody = response.jsonPath().getString("body");
-        int getUserId = response.jsonPath().getInt("userId");
+        String Name = response.jsonPath().getString("name");
+        String Email = response.jsonPath().getString("email");
+        String Gender = response.jsonPath().getString("gender");
+        String Status = response.jsonPath().getString("status");
 
-        Assert.assertEquals(postData.get("title"), getTitle);
-        Assert.assertEquals(postData.get("body"), getBody);
-        Assert.assertEquals(postData.get("userId"), getUserId);
+        Assert.assertEquals(postData.get("name"), Name);
+        Assert.assertEquals(postData.get("email"), Email);
+        Assert.assertEquals(postData.get("gender"), Gender);
+        Assert.assertEquals(postData.get("status"), Status);
 
         System.out.println("Validation successful: GET response matches POST payload");
     }
