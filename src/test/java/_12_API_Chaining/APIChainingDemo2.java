@@ -23,9 +23,9 @@ public class APIChainingDemo2 {
         //simpleGetCall();
     }
     public static void postReqChaining() {
-        postData.put("name", "Gwen Ten");
-        postData.put("email", "gwen.t1@test.com");
-        postData.put("gender", "Female");
+        postData.put("name", "Julie Chan");
+        postData.put("email", "julie.t1@test.com");
+        postData.put("gender", "female");
         postData.put("status", "active");
 
         ValidatableResponse response = given()
